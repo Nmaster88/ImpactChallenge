@@ -38,7 +38,7 @@ namespace ImpactChallenge.WebApi.ApiClients
         public async Task<string> GetTokenAsync(string email)
         {
             var errorMessage = "";
-            var url = _configurationHelper.BasketApiUrl;
+            var url = _configurationHelper.BasketApiUrl + "/api/login";
             var requestBody = "{\"email\": \"{" + email + "\"}";
             #region argument validations
             //TODO: add validations for email
@@ -74,10 +74,10 @@ namespace ImpactChallenge.WebApi.ApiClients
 
             if (response.IsSuccessStatusCode)
             {
-                var responseBodyDeserialized = await JsonSerializer.DeserializeAsync<string>(response.Content.ReadAsStream());
+                var responseBodyDeserialized = await JsonSerializer.DeserializeAsync<Login>(response.Content.ReadAsStream());
 
                 _logger.LogInformation($"Request success with status code {response.StatusCode}");
-                return responseBodyDeserialized;
+                return responseBodyDeserialized.Token;
             }
             else
             {
@@ -90,7 +90,7 @@ namespace ImpactChallenge.WebApi.ApiClients
         public async Task<List<Product>> GetAllProductsAsync(string token)
         {
             var errorMessage = "";
-            var url = _configurationHelper.BasketApiUrl;
+            var url = _configurationHelper.BasketApiUrl + "/api/GetAllProducts";
 
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 

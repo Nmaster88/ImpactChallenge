@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ImpactChallenge.WebApi.Controllers
 {
+    //TODO: apply filters
     [ApiController]
     [Route("[controller]")]
     public class ProductController : ControllerBase
