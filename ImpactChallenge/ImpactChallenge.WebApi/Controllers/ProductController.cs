@@ -1,3 +1,5 @@
+using ImpactChallenge.WebApi.Dtos;
+using ImpactChallenge.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImpactChallenge.WebApi.Controllers
@@ -6,38 +8,31 @@ namespace ImpactChallenge.WebApi.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        //    private static readonly string[] Summaries = new[]
-        //    {
-        //    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        //};
-
         private readonly ILogger<ProductController> _logger;
+        private readonly IProductServices _productServices;
 
-        public ProductController(ILogger<ProductController> logger)
+        public ProductController(
+            ILogger<ProductController> logger,
+             IProductServices productServices
+            )
         {
             _logger = logger;
+            _productServices = productServices;
         }
 
-        //[HttpGet(Name = "GetWeatherForecast")]
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
-
-        //[HttpPost(Name = "AddProductToBasket")]
-        //public ActionResult AddProductToBasket() { }
-
-
         [HttpGet(Name = "TopRankedProducts")]
-        public ActionResult TopRankedProducts([FromQuery] int number = 100)
+        public async Task<IActionResult> TopRankedProducts([FromQuery] string token)
         {
-            throw new NotImplementedException();
+            List<Product> topRankedProducts = await _productServices.GetTopRankedProducts(token);
+            return Ok(topRankedProducts);
+        }
+
+        //TODO: create another controller for authentication purposes
+        [HttpGet(Name = "Login")]
+        public async Task<IActionResult> Authentication([FromQuery] string email)
+        {
+            string token = await _productServices.Login(email);
+            return Ok(token);
         }
     }
 }
