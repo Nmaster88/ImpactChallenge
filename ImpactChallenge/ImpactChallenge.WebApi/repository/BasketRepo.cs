@@ -3,7 +3,8 @@
 namespace ImpactChallenge.WebApi.repository
 {
     /// <summary>
-    /// A temporary class just for testing purposes
+    /// A temporary class just for testing purposes.
+    /// There wasn't time to improve further the class
     /// </summary>
     public class BasketRepo
     {
@@ -50,12 +51,12 @@ namespace ImpactChallenge.WebApi.repository
             {
                 if (orderLine.Quantity < quantity)
                 {
-                    return; //TODO: exception?
+                    return; //TODO: validation, throw exception?
                 }
                 orderLine.Quantity -= quantity;
             }
 
-            return; //TODO: doesnt exist
+            return;
         }
 
         public void IncreaseProductInBasket(int productId, int quantity, Guid basketId)
@@ -67,7 +68,7 @@ namespace ImpactChallenge.WebApi.repository
                 orderLine.Quantity += quantity;
             }
 
-            return; //TODO: doesnt exist
+            return;
         }
     }
 }

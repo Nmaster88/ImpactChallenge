@@ -1,17 +1,37 @@
+using ImpactChallenge.WebApi.ApiClients;
 using ImpactChallenge.WebApi.Filters;
+using ImpactChallenge.WebApi.Services;
+using ImpactChallenge.WebApi.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+    .AddEnvironmentVariables()
+    .Build();
 
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(typeof(ExceptionFilter));
     options.Filters.Add(typeof(ExecutionTimeFilter));
 });
+
+builder.Services
+            .AddSingleton<IProductService, ProductService>()
+            .AddSingleton<IBasketService, BasketService>()
+            .AddSingleton(configuration)
+            .AddSingleton<IConfigurationHelper, ConfigurationHelper>()
+            .AddTransient<IBasketApiClient, BasketApiClient>()
+            .AddHttpClient()
+            ;
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
