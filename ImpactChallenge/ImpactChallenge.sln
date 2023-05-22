@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactChallenge.WebApi", "ImpactChallenge.WebApi\ImpactChallenge.WebApi.csproj", "{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{3C09AB64-34F8-4B12-93FC-1477BF722274}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FEC73AC1-D24C-4FE6-9AB2-72EED35E5BF5} = {3C09AB64-34F8-4B12-93FC-1477BF722274}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {398902A0-DA84-4478-9BAB-FB20CE0075E5}
+	EndGlobalSection
+EndGlobal
