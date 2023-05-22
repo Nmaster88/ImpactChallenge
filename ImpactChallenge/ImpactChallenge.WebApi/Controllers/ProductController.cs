@@ -20,21 +20,21 @@ namespace ImpactChallenge.WebApi.Controllers
             _productServices = productServices;
         }
 
-        [HttpGet(Name = "top-ranked-products")]
+        [HttpGet("top-ranked-products", Name = "top-ranked-products")]
         public async Task<IActionResult> TopRankedProducts([FromQuery] string token)
         {
             List<Product> topRankedProducts = await _productServices.GetTopRankedProducts(token);
             return Ok(topRankedProducts);
         }
 
-        [HttpGet(Name = "ten-cheapest-products")]
+        [HttpGet("ten-cheapest-products", Name = "ten-cheapest-products")]
         public async Task<IActionResult> TenCheapestProducts([FromQuery] string token)
         {
             List<Product> topRankedProducts = await _productServices.GetTenCheapestProducts(token);
             return Ok(topRankedProducts);
         }
 
-        [HttpGet(Name = "get-basket")]
+        [HttpGet("get-basket", Name = "get-basket")]
         public async Task<IActionResult> GetBasket([FromQuery] string token, [FromQuery] string basketId)
         {
             List<Product> topRankedProducts = await _productServices.GetTenCheapestProducts(token);
@@ -42,7 +42,7 @@ namespace ImpactChallenge.WebApi.Controllers
         }
 
         //TODO: create another controller for authentication purposes
-        [HttpGet(Name = "login")]
+        [HttpGet("login", Name = "login")]
         public async Task<IActionResult> Authentication([FromQuery] string email)
         {
             string token = await _productServices.Login(email);
