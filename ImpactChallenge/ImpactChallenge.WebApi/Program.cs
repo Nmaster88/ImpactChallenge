@@ -19,6 +19,11 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(typeof(ExecutionTimeFilter));
 });
 
+builder.Services.AddLogging(builder =>
+{
+    builder.AddConsole();
+});
+
 builder.Services
             .AddSingleton<IProductService, ProductService>()
             .AddSingleton<IBasketService, BasketService>()
