@@ -87,23 +87,6 @@ namespace ImpactChallenge.WebApi.ApiClients
             }
         }
 
-        //public async Task<List<Product>> GetTopRankedProducts(string token, int limit)
-        //{
-        //    //TODO: add validations
-        //    var errorMessage = "";
-        //    var url = _configurationHelper.BasketApiUrl;
-        //    List<Product> topRankedProducts = new List<Product>();
-
-        //    var productsList = await GetAllProductsAsync(token);
-
-        //    if (productsList != null)
-        //    {
-        //        topRankedProducts = productsList.OrderByDescending(p => p.Stars).Skip(0).Take(limit).ToList();
-        //    }
-
-        //    return topRankedProducts;
-        //}
-
         public async Task<List<Product>> GetAllProductsAsync(string token)
         {
             var errorMessage = "";
@@ -155,5 +138,6 @@ namespace ImpactChallenge.WebApi.ApiClients
                 return default;
             }
         }
+
     }
 }

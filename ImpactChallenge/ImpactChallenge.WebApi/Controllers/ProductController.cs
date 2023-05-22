@@ -9,11 +9,11 @@ namespace ImpactChallenge.WebApi.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;
-        private readonly IProductServices _productServices;
+        private readonly IProductService _productServices;
 
         public ProductController(
             ILogger<ProductController> logger,
-             IProductServices productServices
+             IProductService productServices
             )
         {
             _logger = logger;
@@ -27,6 +27,20 @@ namespace ImpactChallenge.WebApi.Controllers
             return Ok(topRankedProducts);
         }
 
+        [HttpGet(Name = "TenCheapestProducts")]
+        public async Task<IActionResult> TenCheapestProducts([FromQuery] string token)
+        {
+            List<Product> topRankedProducts = await _productServices.GetTenCheapestProducts(token);
+            return Ok(topRankedProducts);
+        }
+
+        [HttpGet(Name = "GetBasket")]
+        public async Task<IActionResult> GetBasket([FromQuery] string token, [FromQuery] string basketId)
+        {
+            List<Product> topRankedProducts = await _productServices.GetTenCheapestProducts(token);
+            return Ok(topRankedProducts);
+        }
+
         //TODO: create another controller for authentication purposes
         [HttpGet(Name = "Login")]
         public async Task<IActionResult> Authentication([FromQuery] string email)
@@ -34,5 +48,8 @@ namespace ImpactChallenge.WebApi.Controllers
             string token = await _productServices.Login(email);
             return Ok(token);
         }
+
+        //TODO: endpoint to create order
+        //TODO: endpoint to get order
     }
 }

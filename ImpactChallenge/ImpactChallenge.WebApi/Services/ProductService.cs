@@ -3,22 +3,23 @@ using ImpactChallenge.WebApi.Dtos;
 
 namespace ImpactChallenge.WebApi.Services
 {
-    public interface IProductServices
+    public interface IProductService
     {
         Task<List<Product>> GetTopRankedProducts(string token);
+        Task<List<Product>> GetTenCheapestProducts(string token);
         Task<List<Product>> GetPaginatedProducts(string token, int limit);
         //TODO: login should go into its own controller
         Task<string> Login(string email);
     }
 
-    public class ProductServices : IProductServices
+    public class ProductService : IProductService
     {
-        private readonly ILogger<ProductServices> _logger;
+        private readonly ILogger<ProductService> _logger;
         private readonly IBasketApiClient _apiClient;
 
-        public ProductServices(
+        public ProductService(
             IBasketApiClient apiClient,
-            ILogger<ProductServices> logger
+            ILogger<ProductService> logger
             )
         {
             _apiClient = apiClient ?? throw new ArgumentNullException(nameof(apiClient));
@@ -37,6 +38,20 @@ namespace ImpactChallenge.WebApi.Services
             }
 
             return topRankedProducts;
+        }
+
+        public async Task<List<Product>> GetTenCheapestProducts(string token)
+        {
+            //TODO: top ranked limit/take can be a configurable variable
+            List<Product> tenCheapestProducts = new List<Product>();
+            List<Product> productsList = await _apiClient.GetAllProductsAsync(token);
+
+            if (productsList != null)
+            {
+                tenCheapestProducts = productsList.OrderBy(p => p.Price).Skip(0).Take(10).ToList();
+            }
+
+            return tenCheapestProducts;
         }
 
         public async Task<List<Product>> GetPaginatedProducts(string token, int limit)
