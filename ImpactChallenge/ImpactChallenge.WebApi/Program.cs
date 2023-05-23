@@ -1,5 +1,6 @@
 using ImpactChallenge.WebApi.ApiClients;
 using ImpactChallenge.WebApi.Filters;
+using ImpactChallenge.WebApi.repository;
 using ImpactChallenge.WebApi.Services;
 using ImpactChallenge.WebApi.Utils;
 
@@ -25,11 +26,12 @@ builder.Services.AddLogging(builder =>
 });
 
 builder.Services
-            .AddSingleton<IProductService, ProductService>()
-            .AddSingleton<IBasketService, BasketService>()
+            .AddScoped<IProductService, ProductService>()
+            .AddScoped<IOrderService, OrderService>()
             .AddSingleton(configuration)
-            .AddSingleton<IConfigurationHelper, ConfigurationHelper>()
+            .AddScoped<IConfigurationHelper, ConfigurationHelper>()
             .AddTransient<IBasketApiClient, BasketApiClient>()
+            .AddSingleton<IBasketRepo, BasketRepo>()
             .AddHttpClient()
             ;
 

@@ -2,11 +2,21 @@
 
 namespace ImpactChallenge.WebApi.repository
 {
+    public interface IBasketRepo
+    {
+        void CreateBasket(Basket basket);
+        Basket GetBasket(Guid basketId);
+        void AddProductToBasket(Product product, int quantity, Guid basketId);
+        void RemoveProductFromBasket(int productId, Guid basketId);
+        void DecreaseProductInBasket(int productId, int quantity, Guid basketId);
+        void IncreaseProductInBasket(int productId, int quantity, Guid basketId);
+    }
+
     /// <summary>
     /// A temporary class just for testing purposes.
     /// There wasn't time to improve further the class
     /// </summary>
-    public class BasketRepo
+    public class BasketRepo : IBasketRepo
     {
         private List<Basket> BasketList { get; set; } = new List<Basket>();
 

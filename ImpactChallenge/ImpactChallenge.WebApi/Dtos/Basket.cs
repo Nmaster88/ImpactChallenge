@@ -6,6 +6,8 @@
     public class Basket
     {
         public Guid BasketId { get; set; }
+        public string UserEmail { get; set; }
+        public int TotalAmount { get; set; }
         public List<OrderLine> OrderLines { get; set; }
     }
 }
