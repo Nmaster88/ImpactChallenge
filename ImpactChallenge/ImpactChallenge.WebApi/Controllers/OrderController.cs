@@ -1,12 +1,12 @@
+using ImpactChallenge.WebApi.Filters;
 using ImpactChallenge.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImpactChallenge.WebApi.Controllers
 {
-    //q: how to have the v1 has configurable in the endpoints of the controller?
-    //a: use the [Route] attribute in the controller
-    //q: using the map attribute?
-    //a: use the [Route] attribute in the controller
+    //[ExceptionFilter]
+    //[ExecutionTimeFilter]
+    //[ServiceFilter(typeof(ExecutionTimeFilter))]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class OrderController : ControllerBase

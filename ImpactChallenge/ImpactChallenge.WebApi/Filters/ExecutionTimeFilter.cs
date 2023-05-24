@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ImpactChallenge.WebApi.Filters
 {
-    public class ExecutionTimeFilter : IActionFilter
+    public class ExecutionTimeFilter : Attribute, IActionFilter
     {
         private Stopwatch _stopwatch;
         private readonly ILogger<ExecutionTimeFilter> _logger;
@@ -18,8 +18,11 @@ namespace ImpactChallenge.WebApi.Filters
             var controller = context.Controller.GetType().Name;
             var action = context.ActionDescriptor.DisplayName;
             var traceId = Guid.NewGuid().ToString();
+            var dateTimeUtcNow = DateTime.UtcNow;
             context.HttpContext.Items["TraceId"] = traceId;
-            _logger.LogTrace("Trace ID: {TraceId} | Execution started for {Controller}.{Action}", controller, action, traceId);
+            context.HttpContext.Items["DateTimeUtcNow"] = dateTimeUtcNow;
+            
+            _logger.LogInformation("Trace ID: {traceId} | DateTime Utc: {dateTimeUtcNow} | Execution started for {controller}.{action}", traceId, dateTimeUtcNow, controller, action);
             _stopwatch = Stopwatch.StartNew();
         }
 
@@ -30,7 +33,8 @@ namespace ImpactChallenge.WebApi.Filters
             var controller = context.Controller.GetType().Name;
             var action = context.ActionDescriptor.DisplayName;
             var traceId = context.HttpContext.Items["TraceId"] as string;
-            _logger.LogInformation("Trace ID: {TraceId} | Execution time for {Controller}.{Action}: {ElapsedMilliseconds} ms", controller, action, elapsedMilliseconds, traceId);
+            var dateTimeUtcNow = context.HttpContext.Items["DateTimeUtcNow"] as DateTime?;
+            _logger.LogInformation("Trace ID: {traceId} | DateTime Utc: {dateTimeUtcNow} | Execution time for {controller}.{action}: {elapsedMilliseconds} ms", traceId, dateTimeUtcNow, controller, action, elapsedMilliseconds);
         }
     }
 }

@@ -30,6 +30,8 @@ builder.Services
             .AddScoped<IOrderService, OrderService>()
             .AddSingleton(configuration)
             .AddScoped<IConfigurationHelper, ConfigurationHelper>()
+            //.AddScoped<ExceptionFilter>()
+            //.AddScoped<ExecutionTimeFilter>()
             .AddTransient<IBasketApiClient, BasketApiClient>()
             .AddSingleton<IBasketRepo, BasketRepo>()
             .AddHttpClient()
@@ -51,7 +53,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
