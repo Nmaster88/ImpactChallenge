@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ImpactChallenge.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _logger;

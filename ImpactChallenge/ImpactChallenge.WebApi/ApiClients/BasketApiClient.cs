@@ -73,6 +73,8 @@ namespace ImpactChallenge.WebApi.ApiClients
 
         public async Task<List<Product>> GetAllProductsAsync(string token)
         {
+            CheckIfTokenIsValid(token);
+
             var url = _configurationHelper.BasketApiUrl + "/api/GetAllProducts";
 
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
@@ -101,6 +103,14 @@ namespace ImpactChallenge.WebApi.ApiClients
             {
                 _logger.LogWarning($"Request failed with status code {response.StatusCode}");
                 return default;
+            }
+        }
+
+        private void CheckIfTokenIsValid(string token)
+        {             
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new ArgumentNullException(nameof(token));
             }
         }
 
