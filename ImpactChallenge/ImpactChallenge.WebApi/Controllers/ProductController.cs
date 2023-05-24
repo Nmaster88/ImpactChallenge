@@ -48,8 +48,5 @@ namespace ImpactChallenge.WebApi.Controllers
             string token = await _productServices.Login(email);
             return Ok(token);
         }
-
-        //TODO: endpoint to create order
-        //TODO: endpoint to get order
     }
 }

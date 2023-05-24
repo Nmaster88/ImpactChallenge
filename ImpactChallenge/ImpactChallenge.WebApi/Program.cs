@@ -1,60 +1,75 @@
 using ImpactChallenge.WebApi.ApiClients;
-using ImpactChallenge.WebApi.Filters;
+//using ImpactChallenge.WebApi.Filters;
+using ImpactChallenge.WebApi.Middleware;
 using ImpactChallenge.WebApi.repository;
 using ImpactChallenge.WebApi.Services;
 using ImpactChallenge.WebApi.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-IConfiguration configuration = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
-    .AddEnvironmentVariables()
-    .Build();
+ConfigureServices(builder.Services);
 
-builder.Services.AddControllers(options =>
+ConfigureApp(builder);
+
+void ConfigureServices(IServiceCollection services)
 {
-    options.Filters.Add(typeof(ExceptionFilter));
-    options.Filters.Add(typeof(ExecutionTimeFilter));
-});
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddLogging(builder =>
-{
-    builder.AddConsole();
-});
+    // Add services to the container.
+    IConfiguration configuration = new ConfigurationBuilder()
+        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+        .AddEnvironmentVariables()
+        .Build();
 
-builder.Services
-            .AddScoped<IProductService, ProductService>()
-            .AddScoped<IOrderService, OrderService>()
-            .AddSingleton(configuration)
-            .AddScoped<IConfigurationHelper, ConfigurationHelper>()
-            //.AddScoped<ExceptionFilter>()
-            //.AddScoped<ExecutionTimeFilter>()
-            .AddTransient<IBasketApiClient, BasketApiClient>()
-            .AddSingleton<IBasketRepo, BasketRepo>()
-            .AddHttpClient()
-            ;
+    services.AddControllers(
+        //options =>
+        //{
+        //    options.Filters.Add(typeof(ExceptionFilter));
+        //    options.Filters.Add(typeof(ExecutionTimeFilter));
+        //}
+    );
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    services.AddLogging(builder =>
+    {
+        builder.AddConsole();
+    });
 
+    services
+        .AddScoped<IProductService, ProductService>()
+        .AddScoped<IOrderService, OrderService>()
+        .AddSingleton(configuration)
+        .AddScoped<IConfigurationHelper, ConfigurationHelper>()
+        .AddTransient<IBasketApiClient, BasketApiClient>()
+        .AddSingleton<IBasketRepo, BasketRepo>()
+        .AddHttpClient()
+        ;
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
 }
 
-app.UseHttpsRedirection();
+void ConfigureApp(WebApplicationBuilder builder)
+{
+    
 
-//app.UseAuthorization();
+    var app = builder.Build();
 
-app.MapControllers();
+    app.UseLoggingMiddleware();
 
-app.Run();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    //app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+}

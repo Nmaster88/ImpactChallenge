@@ -8,7 +8,6 @@ namespace ImpactChallenge.WebApi.Services
         Task<List<Product>> GetTopRankedProducts(string token);
         Task<List<Product>> GetTenCheapestProducts(string token);
         Task<List<Product>> GetPaginatedProducts(string token, int limit);
-        //TODO: login should go into its own controller
         Task<string> Login(string email);
     }
 
@@ -28,7 +27,6 @@ namespace ImpactChallenge.WebApi.Services
 
         public async Task<List<Product>> GetTopRankedProducts(string token)
         {
-            //TODO: top ranked limit/take can be a configurable variable
             List<Product> topRankedProducts = new List<Product>();
             List<Product> productsList = await _apiClient.GetAllProductsAsync(token);
 
@@ -42,7 +40,6 @@ namespace ImpactChallenge.WebApi.Services
 
         public async Task<List<Product>> GetTenCheapestProducts(string token)
         {
-            //TODO: top ranked limit/take can be a configurable variable
             List<Product> tenCheapestProducts = new List<Product>();
             List<Product> productsList = await _apiClient.GetAllProductsAsync(token);
 

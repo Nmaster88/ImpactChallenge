@@ -118,11 +118,12 @@ namespace ImpactChallenge.WebApi.ApiClients
                 .CircuitBreaker(3, TimeSpan.FromSeconds(30));
 
             //TODO: test if the Execute works
-            var response = await circuitBreakerPolicy.Execute(async () =>
-            {
-
-                return await _httpClient.GetAsync(url);
-            });
+            var response = await circuitBreakerPolicy.Execute(
+                async () =>
+                {
+                    return await _httpClient.GetAsync(url);
+                }
+            );
 
             if (response.IsSuccessStatusCode)
             {
@@ -137,6 +138,11 @@ namespace ImpactChallenge.WebApi.ApiClients
                 _logger.LogWarning($"Request failed with status code {response.StatusCode}");
                 return default;
             }
+        }
+
+        private void CheckIfUrlIsValid()
+        {
+
         }
 
     }
