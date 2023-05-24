@@ -1,6 +1,7 @@
 ﻿using ImpactChallenge.WebApi.Dtos;
 using ImpactChallenge.WebApi.Utils;
 using Polly;
+using System;
 using System.Text;
 using System.Text.Json;
 
@@ -28,7 +29,7 @@ namespace ImpactChallenge.WebApi.ApiClients
             _configurationHelper = configurationHelper ?? throw new ArgumentNullException(nameof(configurationHelper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _httpClient = _httpClientFactory.CreateClient(); //TODO: create an httpClient each time the GetAsync method is called?
+            _httpClient = _httpClientFactory.CreateClient();
         }
 
         /// <summary>
@@ -37,27 +38,10 @@ namespace ImpactChallenge.WebApi.ApiClients
         /// <param name="email">A string parameter that represents an email</param>
         public async Task<string> GetTokenAsync(string email)
         {
-            var errorMessage = "";
             var url = _configurationHelper.BasketApiUrl + "/api/login";
             var requestBody = "{\"email\": \"{" + email + "\"}";
-            #region argument validations
-            //TODO: add validations for email
 
-            Uri uriResult;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
-            {
-                errorMessage = $"The provided url ({url}) is not a valid Uri";
-                _logger.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
-
-            if (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps)
-            {
-                errorMessage = $"The provided uri scheme is not http or https";
-                _logger.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
-            #endregion
+            CheckIfUrlIsValid(url);
 
             var circuitBreakerPolicy = Policy
                 .Handle<HttpRequestException>()
@@ -89,29 +73,11 @@ namespace ImpactChallenge.WebApi.ApiClients
 
         public async Task<List<Product>> GetAllProductsAsync(string token)
         {
-            var errorMessage = "";
             var url = _configurationHelper.BasketApiUrl + "/api/GetAllProducts";
 
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-            #region argument validations
-            //TODO: add validations for email
-
-            Uri uriResult;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
-            {
-                errorMessage = $"The provided url ({url}) is not a valid Uri";
-                _logger.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
-
-            if (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps)
-            {
-                errorMessage = $"The provided uri scheme is not http or https";
-                _logger.LogError(errorMessage);
-                throw new ArgumentException(errorMessage);
-            }
-            #endregion
+            CheckIfUrlIsValid(url);
 
             var circuitBreakerPolicy = Policy
                 .Handle<HttpRequestException>()
@@ -140,9 +106,28 @@ namespace ImpactChallenge.WebApi.ApiClients
             }
         }
 
-        private void CheckIfUrlIsValid()
+        private void CheckIfUrlIsValid(string url)
         {
+            var errorMessage = "";
+            if (!string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
 
+            Uri uriResult;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out uriResult))
+            {
+                errorMessage = $"The provided url ({url}) is not a valid Uri";
+                _logger.LogError(errorMessage);
+                throw new ArgumentException(errorMessage);
+            }
+
+            if (uriResult.Scheme != Uri.UriSchemeHttp && uriResult.Scheme != Uri.UriSchemeHttps)
+            {
+                errorMessage = $"The provided uri scheme is not http or https";
+                _logger.LogError(errorMessage);
+                throw new ArgumentException(errorMessage);
+            }
         }
 
     }
