@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
+//Not needed anymore
 namespace ImpactChallenge.WebApi.Filters
 {
     public class ExceptionFilter : ExceptionFilterAttribute

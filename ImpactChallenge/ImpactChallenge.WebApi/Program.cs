@@ -5,6 +5,8 @@ using ImpactChallenge.WebApi.repository;
 using ImpactChallenge.WebApi.Services;
 using ImpactChallenge.WebApi.Utils;
 
+//TODO: create custom logger. important because of traceability
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigureServices(builder.Services);
@@ -24,11 +26,6 @@ void ConfigureServices(IServiceCollection services)
         .Build();
 
     services.AddControllers(
-        //options =>
-        //{
-        //    options.Filters.Add(typeof(ExceptionFilter));
-        //    options.Filters.Add(typeof(ExecutionTimeFilter));
-        //}
     );
 
     services.AddLogging(builder =>

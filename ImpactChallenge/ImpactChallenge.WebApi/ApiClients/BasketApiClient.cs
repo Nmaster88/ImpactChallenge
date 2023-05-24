@@ -83,7 +83,6 @@ namespace ImpactChallenge.WebApi.ApiClients
                 .Handle<HttpRequestException>()
                 .CircuitBreaker(3, TimeSpan.FromSeconds(30));
 
-            //TODO: test if the Execute works
             var response = await circuitBreakerPolicy.Execute(
                 async () =>
                 {
@@ -100,7 +99,6 @@ namespace ImpactChallenge.WebApi.ApiClients
             }
             else
             {
-                //TODO: throw error? exception?
                 _logger.LogWarning($"Request failed with status code {response.StatusCode}");
                 return default;
             }
@@ -109,7 +107,7 @@ namespace ImpactChallenge.WebApi.ApiClients
         private void CheckIfUrlIsValid(string url)
         {
             var errorMessage = "";
-            if (!string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
             {
                 throw new ArgumentNullException(nameof(url));
             }
